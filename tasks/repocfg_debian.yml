@@ -1,0 +1,27 @@
+--- # tasks for configuring docker repo on debian-like
+
+- name: add repo gpg key
+  block:
+  - name: add apt key with apt_key module
+    apt_key:
+      url: "https://{{ docker_repo }}/{{ ansible_system | lower }}/{{ ansible_distribution | lower }}/gpg"
+      state: present
+  rescue:
+  - name: add apt key with shell module (alternative for older systems without SNI)
+    shell: |
+      set -o pipefail
+      curl -sSL https://{{ docker_repo }}/{{ ansible_system | lower }}/{{ ansible_distribution | lower }}/gpg | sudo apt-key add -
+    args:
+      warn: no
+
+- name: Add Docker repository.
+  apt_repository:
+    repo: >
+      deb [arch=amd64]
+      https://{{ docker_repo }}/{{ ansible_system | lower }}/{{ ansible_distribution | lower }}
+      {{ ansible_distribution_release }}
+      stable
+    state: present
+    update_cache: yes
+
+...

@@ -1,0 +1,17 @@
+--- # tasks for configuring docker repo on rhel-like
+
+- name: Add Docker GPG key.
+  rpm_key:
+    key: https://{{ docker_repo }}/{{ ansible_system | lower }}/centos/gpg
+    state: present
+
+- name: Add Docker repository.
+  get_url:
+    url: >
+      https://{{ docker_repo }}/{{ ansible_system|lower }}/{{ ansible_distribution|lower }}/docker-{{ docker_edition }}.repo
+    dest: "/etc/yum.repos.d/docker-{{ docker_edition }}.repo"
+    owner: root
+    group: root
+    mode: 0644
+
+...

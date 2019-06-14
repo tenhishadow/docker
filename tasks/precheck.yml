@@ -1,0 +1,32 @@
+---
+
+- name: ping hosts
+  ping:
+
+- name: ensure all hosts are reachable
+  run_once: yes
+  assert:
+    that:
+      - ansible_play_hosts == ansible_play_hosts_all
+
+- name: remove obsolete docker packages
+  package:
+    name:
+      - docker
+      - docker-common
+      - docker-engine
+    state: absent
+
+- name: check or install required packages
+  package:
+    name: "{{ pkg_requirements }}"
+    state: present
+
+- name: check that custom dir has been defined in case of installing into it
+  assert:
+    that:
+    - docker_custom_dir is defined
+  when:
+  - change_docker_dir|bool
+
+...

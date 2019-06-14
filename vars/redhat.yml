@@ -1,0 +1,5 @@
+pkg_requirements:
+  - container-selinux
+  - python
+  - python-devel 
+  - unzip

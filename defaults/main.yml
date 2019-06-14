@@ -1,0 +1,14 @@
+---
+
+change_docker_dir: no
+docker_edition: ce
+docker_package: "docker-{{ docker_edition }}"
+docker_package_state: present
+docker_service_state: started
+docker_service_enabled: yes
+docker_restart_handler_state: restarted
+docker_repo: "download.docker.com"
+docker_users:
+  - "{{ ansible_user }}"
+
+...
